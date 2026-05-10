@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.coverage
+results/
+assets/
+*.json
+!config/setup.json
+.env

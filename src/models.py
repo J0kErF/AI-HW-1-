@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class DenseFilter(nn.Module):
     """Fully Connected Network for signal filtering."""
     def __init__(self, window_size: int, num_freqs: int):
@@ -28,11 +29,10 @@ class RNNFilter(nn.Module):
         self.fc = nn.Linear(32, 1)
 
     def forward(self, x, one_hot):
-        batch_size = x.size(0)
         # Expand one_hot to match sequence length
         one_hot_seq = one_hot.unsqueeze(1).repeat(1, self.window_size, 1)
         x_seq = x.unsqueeze(-1)
-        
+
         combined = torch.cat((x_seq, one_hot_seq), dim=2)
         out, _ = self.rnn(combined)
         return self.fc(out).squeeze(-1)
@@ -46,10 +46,9 @@ class LSTMFilter(nn.Module):
         self.fc = nn.Linear(32, 1)
 
     def forward(self, x, one_hot):
-        batch_size = x.size(0)
         one_hot_seq = one_hot.unsqueeze(1).repeat(1, self.window_size, 1)
         x_seq = x.unsqueeze(-1)
-        
+
         combined = torch.cat((x_seq, one_hot_seq), dim=2)
         out, _ = self.lstm(combined)
         return self.fc(out).squeeze(-1)
